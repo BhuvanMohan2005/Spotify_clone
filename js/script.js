@@ -2,7 +2,7 @@
 let currentSong = new Audio();
 let songs;
 let currentFolder;
-
+//This will be helpful when the website alllows us to show the intermediate folders separately which is not possible in github so i have used the other version of this function below this
 async function getSongs(folder) {
     const res = await fetch(`/${folder}/`);
     currentFolder = folder
@@ -45,6 +45,44 @@ async function getSongs(folder) {
     return songs
 }
 
+//For this I have updated the info.json file which now includes array of "songs". This actually increases manual work whenever we add anu other songs in the playlist that req updations in the info.json file
+  
+async function getSongs(folder) {
+    currentFolder = folder;
+    try {
+        const res = await fetch(`${folder}/info.json`);
+        const data = await res.json();
+        songs = data.songs;
+
+        let songUL = document.querySelector(".songList ul");
+        songUL.innerHTML = "";
+        for (const song of songs) {
+            songUL.innerHTML += `
+                <li>
+                    <img class="invert" src="images/music.svg" alt="music">
+                    <div class="info">
+                        <div>${song}</div>
+                        <div>${data.title}</div>
+                    </div>
+                    <div class="playNow">
+                        <span>Play Now</span>
+                        <img class="invert" src="images/playNow.svg" alt="Logo" width="25">
+                    </div>
+                </li>`;
+        }
+        //attach an event listener to get each song
+        Array.from(songUL.getElementsByTagName("li")).forEach(e => {
+            e.addEventListener("click", () => {
+                playMusic(e.querySelector(".info>div").innerHTML);
+                play.src = "images/pause.svg";
+            });
+        });
+
+        return songs
+    } catch (err) {
+        console.error("Error loading songs:", err);
+    }
+}
 
 const playMusic = (track, pause = false) => {
     //let currentSong= new Audio("songs/"+track);
@@ -121,7 +159,7 @@ function attachCardListeners() {
 
 async function main() {
     //Get all the songs
-    await getSongs("Songs/NCS");
+    await getSongs("songs/NCS");
     playMusic(songs[0],true)
     await displayAlbums();
     attachCardListeners(); // Call this afterward
