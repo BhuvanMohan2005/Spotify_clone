@@ -47,7 +47,7 @@ async function getSongs(folder) {
 }
 
 //For this I have updated the info.json file which now includes array of "songs". This actually increases manual work whenever we add anu other songs in the playlist that req updations in the info.json file
-  
+
 async function getSongs(folder) {
     currentFolder = folder;
     try {
@@ -125,7 +125,7 @@ async function displayAlbums() {
 
         for (const folder of data.playlists) {
             try {
-                const infoRes = await fetch(`songs/${folder}/info.json`);
+                const infoRes = await fetch(`Songs/${folder}/info.json`);
                 const info = await infoRes.json();
 
                 cardContainer.innerHTML += `
@@ -158,7 +158,7 @@ function attachCardListeners() {
     Array.from(document.getElementsByClassName("card")).forEach(e => {
         e.addEventListener('click', async item => {
             const folder = item.currentTarget.dataset.folder;
-            songs=await getSongs(`songs/${folder}`);
+            songs = await getSongs(`songs/${folder}`);
             if (songs.length > 0) playMusic(songs[0]);
         });
     });
@@ -168,7 +168,7 @@ function attachCardListeners() {
 async function main() {
     //Get all the songs
     await getSongs("songs/NCS");
-    playMusic(songs[0],true)
+    playMusic(songs[0], true)
     await displayAlbums();
 
     /*showing all the songs in the playlist. This initially created here but next taken into a function 
@@ -198,46 +198,46 @@ async function main() {
 
     */
 
-//till this you if you play the songs those will be played continuously without pausing
+    //till this you if you play the songs those will be played continuously without pausing
 
-//attach an event listener to play,next and previous
-play.addEventListener("click", () => {
-    if (currentSong.paused) {
-        currentSong.play();
-        play.src = "images/pause.svg";
-    }
-    else {
-        currentSong.pause();
-        play.src = "images/play.svg";
+    //attach an event listener to play,next and previous
+    play.addEventListener("click", () => {
+        if (currentSong.paused) {
+            currentSong.play();
+            play.src = "images/pause.svg";
+        }
+        else {
+            currentSong.pause();
+            play.src = "images/play.svg";
 
-    }
-})
-
-
-//Listen for timeupdate event
-currentSong.addEventListener("timeupdate", () => {
-    console.log(currentSong.duration, currentSong.currentTime)
-    document.querySelector(".songtime").innerHTML = `${secondsToMinutesSeconds(currentSong.currentTime)}     / ${secondsToMinutesSeconds(currentSong.duration)}`;
-    document.querySelector(".circle").style.left = (currentSong.currentTime / currentSong.duration) * 100 + "%";
-})
-
-//Add an event listener to seekbar
-document.querySelector(".seekbar").addEventListener("click", e => {
-    let percent = (e.offsetX / e.target.getBoundingClientRect().width) * 100;
-    document.querySelector(".circle").style.left = percent + '%';
-    currentSong.currentTime = currentSong.duration * percent / 100;
-})
-
-//add a event listener for hamburger
-document.querySelector(".hamburger").addEventListener("click", e => {
-    document.querySelector(".left").style.left = '0';
-})
-document.querySelector(".close").addEventListener("click", e => {
-    document.querySelector(".left").style.left = '-100%';
-})
+        }
+    })
 
 
-// Previous button
+    //Listen for timeupdate event
+    currentSong.addEventListener("timeupdate", () => {
+        console.log(currentSong.duration, currentSong.currentTime)
+        document.querySelector(".songtime").innerHTML = `${secondsToMinutesSeconds(currentSong.currentTime)}     / ${secondsToMinutesSeconds(currentSong.duration)}`;
+        document.querySelector(".circle").style.left = (currentSong.currentTime / currentSong.duration) * 100 + "%";
+    })
+
+    //Add an event listener to seekbar
+    document.querySelector(".seekbar").addEventListener("click", e => {
+        let percent = (e.offsetX / e.target.getBoundingClientRect().width) * 100;
+        document.querySelector(".circle").style.left = percent + '%';
+        currentSong.currentTime = currentSong.duration * percent / 100;
+    })
+
+    //add a event listener for hamburger
+    document.querySelector(".hamburger").addEventListener("click", e => {
+        document.querySelector(".left").style.left = '0';
+    })
+    document.querySelector(".close").addEventListener("click", e => {
+        document.querySelector(".left").style.left = '-100%';
+    })
+
+    /*
+    // Previous button
     previous.addEventListener("click", () => {
         if (!songs || songs.length === 0) return;
 
@@ -263,34 +263,54 @@ document.querySelector(".close").addEventListener("click", e => {
             playMusic(songs[index + 1]);
             play.src = "images/pause.svg";
         }
-    });
+
+    });*/
+
+    //add an event listener for previous 
+    previous.addEventListener("click", e => {
+        currentSong.pause()
+        console.log("Prev clicked");
+        let index = songs.indexOf(currentSong.src.split("/").slice(-1)[0]);
+        if (index - 1 >= 0) {
+            playMusic(songs[index - 1])
+            play.src = "images/pause.svg";
+        }
+    })
+    //add an event listener for next 
+    next.addEventListener("click", e => {
+        currentSong.pause();
+        console.log("Next clicked");
+        let index = songs.indexOf(currentSong.src.split("/").slice(-1)[0]);
+        if (index + 1 < (songs.length)) {
+            playMusic(songs[index + 1])
+            play.src = "images/pause.svg";
+        }
+    })
+    //Add an event for volume 
+    document.querySelector('.range').getElementsByTagName("input")[0].addEventListener("change", (e) => {
+        console.log("Setting Volume to ", e.target.value)
+        currentSong.volume = parseInt(e.target.value) / 100
+    })
 
 
-//Add an event for volume 
-document.querySelector('.range').getElementsByTagName("input")[0].addEventListener("change", (e) => {
-    console.log("Setting Volume to ", e.target.value)
-    currentSong.volume = parseInt(e.target.value) / 100
-})
 
 
 
+    //add event listener for muting the volume
+    document.querySelector('.volume>img').addEventListener('click', e => {
+        if (e.target.src.includes('images/volume.svg')) {
+            e.target.src = e.target.src.replace('images/volume.svg', 'images/mute.svg');
+            currentSong.volume = 0;
+            document.querySelector('.range').getElementsByTagName("input")[0].value = 0;
+        }
+        else if (e.target.src.includes('images/mute.svg')) {
+            e.target.src = e.target.src.replace('images/mute.svg', 'images/volume.svg');
+            currentSong.volume = 0.1;
+            document.querySelector('.range').getElementsByTagName("input")[0].value = 20;
+        }
 
+    })
 
-//add event listener for muting the volume
-document.querySelector('.volume>img').addEventListener('click',e=>{
-    if (e.target.src.includes('images/volume.svg')){
-        e.target.src=e.target.src.replace('images/volume.svg','images/mute.svg');
-        currentSong.volume=0;
-        document.querySelector('.range').getElementsByTagName("input")[0].value=0;
-    }
-    else if (e.target.src.includes('images/mute.svg')){
-        e.target.src=e.target.src.replace('images/mute.svg', 'images/volume.svg');
-        currentSong.volume=0.1;
-        document.querySelector('.range').getElementsByTagName("input")[0].value=20;
-    }
-
-})
- 
 }
 
 
