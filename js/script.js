@@ -21,14 +21,14 @@ async function getSongs(folder) {
     let songUL = document.querySelector(".songList").getElementsByTagName("ul")[0];
     songUL.innerHTML = ""
     for (const song of songs) {
-        songUL.innerHTML += `<li> <img class="invert"src="/images/music.svg" alt="music">
+        songUL.innerHTML += `<li> <img class="invert" src="images/music.svg" alt="music">
                             <div class="info">
                                 <div>${song.replaceAll('%20', ' ')}</div>
                                 <div>Thaman</div>
                             </div>
                             <div class="playNow">
                                 <span>Play Now</span>
-                                <img class="invert" src="/images/playNow.svg" alt="Logo" width="25">
+                                <img class="invert" src="images/playNow.svg" alt="Logo" width="25">
                             </div> </li>`;
 
     }
@@ -38,7 +38,7 @@ async function getSongs(folder) {
         e.addEventListener("click", element => {
             //console.log(e.querySelector(".info>div").innerHTML)
             playMusic(e.querySelector(".info>div").innerHTML)
-            play.src = "/images/pause.svg";
+            play.src = "images/pause.svg";
         })
     })
 
@@ -51,7 +51,7 @@ const playMusic = (track, pause = false) => {
     currentSong.src = `${currentFolder}/` + track;
     if (!pause) {
         currentSong.play()
-        play.src = "/images/pause.svg";
+        play.src = "images/pause.svg";
     }
     document.querySelector(".songinfo").innerHTML = decodeURI(track);
     document.querySelector(".songtime").innerHTML = "00:00     /     00:00";
@@ -129,14 +129,14 @@ async function main() {
     /*showing all the songs in the playlist
     let songUL=document.querySelector(".songList").getElementsByTagName("ul")[0];
     for (const song of songs){
-        songUL.innerHTML+=`<li> <img class="invert"src="/images/music.svg" alt="music">
+        songUL.innerHTML+=`<li> <img class="invert"src="images/music.svg" alt="music">
                             <div class="info">
                                 <div>${song.replaceAll('%20',' ')}</div>
                                 <div>Thaman</div>
                             </div>
                             <div class="playNow">
                                 <span>Play Now</span>
-                                <img class="invert" src="/images/playNow.svg" alt="Logo" width="25">
+                                <img class="invert" src="images/playNow.svg" alt="Logo" width="25">
                             </div> </li>`;
 
     }
@@ -146,7 +146,7 @@ async function main() {
         e.addEventListener("click",element=>{
             //console.log(e.querySelector(".info>div").innerHTML)
             playMusic(e.querySelector(".info>div").innerHTML)
-            play.src="/images/pause.svg";
+            play.src="images/pause.svg";
         })
     })
 
@@ -160,11 +160,11 @@ async function main() {
     play.addEventListener("click", () => {
         if (currentSong.paused) {
             currentSong.play();
-            play.src = "/images/pause.svg";
+            play.src = "images/pause.svg";
         }
         else {
             currentSong.pause();
-            play.src = "/images/play.svg";
+            play.src = "images/play.svg";
 
         }
     })
@@ -200,7 +200,7 @@ async function main() {
         let index = songs.indexOf(currentSong.src.split("/").slice(-1)[0]);
         if (index - 1 >= 0) {
             playMusic(songs[index - 1])
-            play.src = "/images/pause.svg";
+            play.src = "images/pause.svg";
 
         }
     })
@@ -211,7 +211,7 @@ async function main() {
         let index = songs.indexOf(currentSong.src.split("/").slice(-1)[0]);
         if (index + 1 < (songs.length)) {
             playMusic(songs[index + 1])
-            play.src = "/images/pause.svg";
+            play.src = "images/pause.svg";
         }
 
     })
@@ -228,13 +228,13 @@ async function main() {
 
     //add event listener for muting the volume
     document.querySelector('.volume>img').addEventListener('click',e=>{
-        if (e.target.src.includes('/images/volume.svg')){
-            e.target.src=e.target.src.replace('/images/volume.svg','/images/mute.svg');
+        if (e.target.src.includes('images/volume.svg')){
+            e.target.src=e.target.src.replace('images/volume.svg','images/mute.svg');
             currentSong.volume=0;
             document.querySelector('.range').getElementsByTagName("input")[0].value=0;
         }
-        else if (e.target.src.includes('/images/mute.svg')){
-            e.target.src=e.target.src.replace('/images/mute.svg', '/images/volume.svg');
+        else if (e.target.src.includes('images/mute.svg')){
+            e.target.src=e.target.src.replace('images/mute.svg', 'images/volume.svg');
             currentSong.volume=0.1;
             document.querySelector('.range').getElementsByTagName("input")[0].value=20;
         }
