@@ -125,7 +125,7 @@ async function displayAlbums() {
 
         for (const folder of data.playlists) {
             try {
-                const infoRes = await fetch(`Songs/${folder}/info.json`);
+                const infoRes = await fetch(`songs/${folder}/info.json`);
                 const info = await infoRes.json();
 
                 cardContainer.innerHTML += `
