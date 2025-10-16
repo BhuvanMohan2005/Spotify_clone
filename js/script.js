@@ -45,46 +45,6 @@ async function getSongs(folder) {
     return songs
 }
 
-//Updated getSongs with showing the cleaner path for the songs
-async function getSongs(folder) {
-    currentFolder = folder;
-
-    try {
-        const res = await fetch(`${folder}/songs.json`);
-        const data = await res.json();
-        songs = data.songs;
-
-        let songUL = document.querySelector(".songList ul");
-        songUL.innerHTML = "";
-        for (const song of songs) {
-            songUL.innerHTML += `
-                <li>
-                    <img class="invert" src="images/music.svg" alt="music">
-                    <div class="info">
-                        <div>${song}</div>
-                        <div>Thaman</div>
-                    </div>
-                    <div class="playNow">
-                        <span>Play Now</span>
-                        <img class="invert" src="images/playNow.svg" width="25">
-                    </div>
-                </li>`;
-        }
-
-        Array.from(songUL.getElementsByTagName("li")).forEach(e => {
-            e.addEventListener("click", () => {
-                playMusic(e.querySelector(".info>div").innerHTML);
-                play.src = "images/pause.svg";
-            });
-        });
-
-    } catch (err) {
-        console.error("Failed to load songs:", err);
-    }
-
-    return songs;
-}
-
 
 const playMusic = (track, pause = false) => {
     //let currentSong= new Audio("songs/"+track);
@@ -161,7 +121,7 @@ function attachCardListeners() {
 
 async function main() {
     //Get all the songs
-    await getSongs("songs/NCS");
+    await getSongs("Songs/NCS");
     playMusic(songs[0],true)
     await displayAlbums();
     attachCardListeners(); // Call this afterward
