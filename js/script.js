@@ -68,7 +68,7 @@ function secondsToMinutesSeconds(seconds) {
 }
 
 async function displayAlbums() {
-    let a = await fetch("/songs/");
+    let a = await fetch("songs/");
     let response = await a.text();
 
     let div = document.createElement("div");
@@ -78,10 +78,10 @@ async function displayAlbums() {
     let cardContainer = document.querySelector('.cardContainer');
 
     for (const e of Array.from(anchors)) {
-        if (e.href.includes(`/songs`) && !e.href.endsWith("/songs/")) {
+        if (e.href.includes(`songs`) && !e.href.endsWith("songs/")) {
             let folder = e.href.split("/").slice(-1)[0];
             try {
-                let a = await fetch(`/songs/${folder}/info.json`);
+                let a = await fetch(`songs/${folder}/info.json`);
                 let response = await a.json();
 
                 cardContainer.innerHTML += `
@@ -95,7 +95,7 @@ async function displayAlbums() {
                                     fill="rgba(224, 221, 221, 1)" />
                             </svg>
                         </div>
-                        <img src="/songs/${folder}/cover.jpeg" alt="${response.title}">
+                        <img src="songs/${folder}/cover.jpeg" alt="${response.title}">
                         <h3>${response.title}</h3>
                         <p>${response.description}</p>
                     </div>
