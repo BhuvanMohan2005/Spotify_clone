@@ -236,34 +236,34 @@ async function main() {
         document.querySelector(".left").style.left = '-100%';
     })
 
-    
+
     // Previous button
     previous.addEventListener("click", () => {
-        if (!songs || songs.length === 0) return;
 
         currentSong.pause();
         const currentFile = decodeURIComponent(currentSong.src.split("/").pop());
         let index = songs.indexOf(currentFile);
 
-        if (index > 0) {
-            playMusic(songs[index - 1]);
-            play.src = "images/pause.svg";
-        }
+        if (index === -1) return;
+
+        let prevIndex = (index - 1 + songs.length) % songs.length; // loops to last song if index = 0
+
+        playMusic(songs[prevIndex]);
+        play.src = "images/pause.svg";
     });
 
     // Next button
     next.addEventListener("click", () => {
-        if (!songs || songs.length === 0) return;
-
         currentSong.pause();
         const currentFile = decodeURIComponent(currentSong.src.split("/").pop());
         let index = songs.indexOf(currentFile);
 
-        if (index !== -1 && index + 1 < songs.length) {
-            playMusic(songs[index + 1]);
-            play.src = "images/pause.svg";
-        }
+        if (index === -1) return; // song not found
 
+        let nextIndex = (index + 1) % songs.length; // wraps around to 0 after last
+
+        playMusic(songs[nextIndex]);
+        play.src = "images/pause.svg";
     });
     /*
     //add an event listener for previous 
