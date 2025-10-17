@@ -377,6 +377,12 @@ body {
 
 /* Hide "Play Now" text when screen width is less than 400px */ 
 @media (max-width: 500px) {
+    .left{
+        padding:0px;
+    }
+    .right{
+        position: fixed;
+    }
     .playNow span {
         display: none;
     }
