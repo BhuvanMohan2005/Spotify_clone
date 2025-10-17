@@ -67,9 +67,9 @@ body {
     font-size: 13px;
 }
 .songList{
-    height:85vh;
+    height:83vh;
     overflow: auto;
-    margin-bottom:30px;
+
 
 }
 .songList ul{
@@ -122,9 +122,8 @@ body {
     color: grey;
     font-size: 10px;
     gap: 15px;
-    position: absolute;
+    position: block;
     bottom: 0;
-    padding:10px,0;
 }
 
 .footer a {
