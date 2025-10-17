@@ -219,6 +219,13 @@ async function main() {
         console.log(currentSong.duration, currentSong.currentTime)
         document.querySelector(".songtime").innerHTML = `${secondsToMinutesSeconds(currentSong.currentTime)}     / ${secondsToMinutesSeconds(currentSong.duration)}`;
         document.querySelector(".circle").style.left = (currentSong.currentTime / currentSong.duration) * 100 + "%";
+        if (currentSong.currentTime == currentSong.duration) {
+            console.log("playing the next song")
+            const currentFile = decodeURIComponent(currentSong.src.split("/").pop());
+            let index = songs.indexOf(currentFile);
+            playMusic(songs[(index + 1) % (songs.length)])
+        }
+
     })
 
     //Add an event listener to seekbar
@@ -239,7 +246,7 @@ async function main() {
 
     // Previous button
     previous.addEventListener("click", () => {
-
+        console.log("Prev clicked");
         currentSong.pause();
         const currentFile = decodeURIComponent(currentSong.src.split("/").pop());
         let index = songs.indexOf(currentFile);
@@ -254,6 +261,7 @@ async function main() {
 
     // Next button
     next.addEventListener("click", () => {
+        console.log("Next clicked");
         currentSong.pause();
         const currentFile = decodeURIComponent(currentSong.src.split("/").pop());
         let index = songs.indexOf(currentFile);
@@ -302,11 +310,13 @@ async function main() {
             e.target.src = e.target.src.replace('images/volume.svg', 'images/mute.svg');
             currentSong.volume = 0;
             document.querySelector('.range').getElementsByTagName("input")[0].value = 0;
+            console.log("Muted");
         }
         else if (e.target.src.includes('images/mute.svg')) {
             e.target.src = e.target.src.replace('images/mute.svg', 'images/volume.svg');
             currentSong.volume = 0.1;
             document.querySelector('.range').getElementsByTagName("input")[0].value = 20;
+            console.log("Unmuted");
         }
 
     })
