@@ -167,7 +167,7 @@ function attachCardListeners() {
 
 async function main() {
     //Get all the songs
-    await getSongs("songs_folder/NCS");
+    await getSongs("songs_folder/Addiction%20Beats");
     playMusic(songs[0], true)
     await displayAlbums();
 
@@ -203,11 +203,13 @@ async function main() {
     //attach an event listener to play,next and previous
     play.addEventListener("click", () => {
         if (currentSong.paused) {
+            console.log("Song is playing")
             currentSong.play();
             play.src = "images/pause.svg";
         }
         else {
             currentSong.pause();
+            console.log("Song is paused")
             play.src = "images/play.svg";
 
         }
