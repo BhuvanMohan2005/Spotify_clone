@@ -125,7 +125,7 @@ async function displayAlbums() {
 
         for (const folder of data.playlists) {
             try {
-                const infoRes = await fetch(`songs/${folder}/info.json`);
+                const infoRes = await fetch(`songs_folder/${folder}/info.json`);
                 const info = await infoRes.json();
 
                 cardContainer.innerHTML += `
@@ -138,7 +138,7 @@ async function displayAlbums() {
                                     fill="rgba(224, 221, 221, 1)" />
                             </svg>
                         </div>
-                        <img src="songs/${folder}/cover.jpeg" alt="${info.title}">
+                        <img src="songs_folder/${folder}/cover.jpeg" alt="${info.title}">
                         <h3>${info.title}</h3>
                         <p>${info.description}</p>
                     </div>
@@ -158,7 +158,7 @@ function attachCardListeners() {
     Array.from(document.getElementsByClassName("card")).forEach(e => {
         e.addEventListener('click', async item => {
             const folder = item.currentTarget.dataset.folder;
-            songs = await getSongs(`songs/${folder}`);
+            songs = await getSongs(`songs_folder/${folder}`);
             if (songs.length > 0) playMusic(songs[0]);
         });
     });
@@ -167,7 +167,7 @@ function attachCardListeners() {
 
 async function main() {
     //Get all the songs
-    await getSongs("songs/NCS");
+    await getSongs("songs_folder/NCS");
     playMusic(songs[0], true)
     await displayAlbums();
 
@@ -236,7 +236,7 @@ async function main() {
         document.querySelector(".left").style.left = '-100%';
     })
 
-    /*
+    
     // Previous button
     previous.addEventListener("click", () => {
         if (!songs || songs.length === 0) return;
@@ -264,8 +264,8 @@ async function main() {
             play.src = "images/pause.svg";
         }
 
-    });*/
-
+    });
+    /*
     //add an event listener for previous 
     previous.addEventListener("click", e => {
         currentSong.pause()
@@ -285,7 +285,7 @@ async function main() {
             playMusic(songs[index + 1])
             play.src = "images/pause.svg";
         }
-    })
+    })*/
     //Add an event for volume 
     document.querySelector('.range').getElementsByTagName("input")[0].addEventListener("change", (e) => {
         console.log("Setting Volume to ", e.target.value)
